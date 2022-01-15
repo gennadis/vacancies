@@ -1,14 +1,12 @@
-from locale import currency
 import requests
 from pprint import pprint
 
 HH_BASE_API = "https://api.hh.ru"
-PROG_LANGUAGES = ["JavaScript", "Python", "Go", "Java", "Kotlin", "C++", "PHP", "Swift"]
 
 
-def get_vacacnies(
+def get_vacancies(
     base_url: str, endpoint: str, role_id: int, area_id: int, period: int, text: str
-):
+) -> list[dict]:
 
     url = f"{base_url}{endpoint}"
     params = {
@@ -16,6 +14,8 @@ def get_vacacnies(
         "area": area_id,
         "period": period,
         "text": text,
+        "only_with_salary": True,
+        "currency": "RUR",
     }
 
     response = requests.get(url, params)
@@ -43,7 +43,7 @@ def predict_rub_salary(vacancy: dict) -> int:
 
 
 def main():
-    python_jobs = get_vacacnies(HH_BASE_API, "/vacancies", 96, 1, 30, "python")["items"]
+    python_jobs = get_vacancies(HH_BASE_API, "/vacancies", 96, 1, 30, "python")["items"]
     for job in python_jobs:
         print(predict_rub_salary(job))
 
