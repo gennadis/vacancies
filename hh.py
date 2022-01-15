@@ -1,6 +1,8 @@
 import requests
 from typing import Union
 
+from utils import predict_salary
+
 
 def get_vacancies(
     base_url: str,
@@ -47,18 +49,11 @@ def predict_rub_salary(vacancy: dict) -> Union[int, None]:
     salary: dict = vacancy.get("salary")
     salary_from: int = salary.get("from")
     salary_to: int = salary.get("to")
-    currency: str = salary.get("currency")
 
-    if currency != "RUR":
+    if salary.get("currency") != "RUR":
         return
 
-    if salary_to is None:
-        return int(salary_from * 1.2)
-
-    if salary_from is None:
-        return int(salary_to * 0.8)
-
-    return int((salary_from + salary_to) / 2)
+    return predict_salary(salary_from, salary_to)
 
 
 def get_vacancies_stats(vacancies: list[dict]) -> dict:
