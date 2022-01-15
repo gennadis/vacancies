@@ -1,8 +1,5 @@
 import requests
-from pprint import pprint
 from typing import Union
-
-HH_BASE_API = "https://api.hh.ru"
 
 
 def get_vacancies(
@@ -68,12 +65,12 @@ def get_vacancies_stats(vacancies: list[dict]) -> dict:
     statistics = {}
 
     salaries = []
-    for vacancy in vacancies.get("items"):
+    for vacancy in vacancies:
         salary: Union[int, None] = predict_rub_salary(vacancy)
         if salary:
             salaries.append(salary)
 
-    statistics["vacancies_found"] = vacancies.get("found")
+    statistics["vacancies_found"] = len(vacancies)
     statistics["vacancies_processed"] = len(salaries)
     statistics["average_salary"] = int(sum(salaries) / len(salaries))
 
@@ -81,30 +78,7 @@ def get_vacancies_stats(vacancies: list[dict]) -> dict:
 
 
 def main():
-
-    prog_languages = [
-        "JavaScript",
-        "Python",
-        "Go",
-        "Java",
-        "Kotlin",
-        "C#",
-        "PHP",
-        "Swift",
-        "Ruby",
-        "1С",
-    ]
-
-    python = get_vacancies(
-        base_url=HH_BASE_API,
-        endpoint="/vacancies",
-        role_id=96,
-        area_id=1,
-        period=30,
-        text="python",
-        per_page=100,
-    )
-    print(len(python))
+    pass
 
 
 if __name__ == "__main__":
