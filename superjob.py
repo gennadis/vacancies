@@ -37,11 +37,11 @@ def get_vacancies_sj(
     return vacancies
 
 
-def predict_rub_salary_sj(vacancie: dict) -> Optional[int]:
-    salary_from: int = vacancie.get("payment_from")
-    salary_to: int = vacancie.get("payment_to")
+def predict_rub_salary_sj(vacancy: dict) -> Optional[int]:
+    salary_from: int = vacancy.get("payment_from")
+    salary_to: int = vacancy.get("payment_to")
 
-    if vacancie.get("currency") != "rub":
+    if vacancy.get("currency") != "rub":
         return
     if salary_from == salary_to == 0:
         return
@@ -61,11 +61,11 @@ def main():
         keyword="программист",
     )
 
-    for vacancie in vacancies:
+    for vacancy in vacancies:
         print(
-            vacancie["profession"],
-            vacancie["town"]["title"],
-            predict_rub_salary_sj(vacancie),
+            vacancy["profession"],
+            vacancy["town"]["title"],
+            predict_rub_salary_sj(vacancy),
             sep=", ",
         )
 
