@@ -34,12 +34,12 @@ def predict_rub_salary(vacancy: dict) -> int:
         return
 
     if salary_to is None:
-        return salary_from * 1.2
+        return int(salary_from * 1.2)
 
     if salary_from is None:
-        return salary_to * 0.8
+        return int(salary_to * 0.8)
 
-    return (salary_from + salary_to) / 2
+    return int((salary_from + salary_to) / 2)
 
 
 def main():
