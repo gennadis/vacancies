@@ -1,3 +1,4 @@
+from locale import currency
 import requests
 from pprint import pprint
 
@@ -23,10 +24,28 @@ def get_vacacnies(
     return response.json()
 
 
+def predict_rub_salary(vacancy: dict) -> int:
+    salary: dict = vacancy.get("salary")
+    salary_from: int = salary.get("from")
+    salary_to: int = salary.get("to")
+    currency: str = salary.get("currency")
+
+    if currency != "RUR":
+        return
+
+    if salary_to is None:
+        return salary_from * 1.2
+
+    if salary_from is None:
+        return salary_to * 0.8
+
+    return (salary_from + salary_to) / 2
+
+
 def main():
-    python_jobs = get_vacacnies(HH_BASE_API, "/vacancies", 96, 1, 30, "ptyhon")["items"]
+    python_jobs = get_vacacnies(HH_BASE_API, "/vacancies", 96, 1, 30, "python")["items"]
     for job in python_jobs:
-        print(job["salary"])
+        print(predict_rub_salary(job))
 
 
 if __name__ == "__main__":
