@@ -11,5 +11,9 @@ def predict_salary(salary_from: int, salary_to: int) -> Union[int, float, None]:
     return (salary_from + salary_to) / 2
 
 
+def main():
+    pass
+
+
 if __name__ == "__main__":
-    print(predict_salary(None, None))
+    main()
