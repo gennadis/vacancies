@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, Callable
 
 
 def predict_salary(salary_from: int, salary_to: int) -> Union[int, float, None]:
@@ -9,6 +9,22 @@ def predict_salary(salary_from: int, salary_to: int) -> Union[int, float, None]:
     if not salary_from:
         return salary_to * 0.8
     return (salary_from + salary_to) / 2
+
+
+def get_vacancies_stats(vacancies: list[dict], predict_salary_for: Callable) -> dict:
+    statistics = {}
+
+    salaries = []
+    for vacancy in vacancies:
+        salary: Union[int, None] = predict_salary_for(vacancy)
+        if salary:
+            salaries.append(salary)
+
+    statistics["vacancies_found"] = len(vacancies)
+    statistics["vacancies_processed"] = len(salaries)
+    statistics["average_salary"] = int(sum(salaries) / len(salaries))
+
+    return statistics
 
 
 def main():

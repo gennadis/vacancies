@@ -3,7 +3,9 @@ from pprint import pprint
 
 from dotenv import load_dotenv
 
-from hh import get_vacancies_hh, get_vacancies_stats_hh
+
+from hh import get_vacancies_hh, predict_rub_salary_hh
+from utils import get_vacancies_stats
 
 HH_API_BASE_URL = "https://api.hh.ru"
 HH_VACANCIES_ENDPOINT = "/vacancies"
@@ -19,7 +21,6 @@ PROGRAMMING_LANGUAGES = [
     "PHP",
     "Swift",
     "Ruby",
-    "1С",
 ]
 
 
@@ -37,7 +38,7 @@ def main():
             text=language,
             per_page=100,
         )
-        total_stats[language] = get_vacancies_stats_hh(vacancies)
+        total_stats[language] = get_vacancies_stats(vacancies, predict_rub_salary_hh)
 
     pprint(total_stats)
 

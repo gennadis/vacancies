@@ -5,7 +5,7 @@ from typing import Optional, Union
 
 from dotenv import load_dotenv
 
-from utils import predict_salary
+from utils import predict_salary, get_vacancies_stats
 
 SUPERJOB_API_URL = "https://api.superjob.ru/2.0"
 ENDPOINT = "/vacancies"
@@ -64,23 +64,6 @@ def predict_rub_salary_sj(vacancy: dict) -> Optional[int]:
     return int(predict_salary(salary_from, salary_to))
 
 
-def get_vacancies_stats_sj(vacancies: list[dict]) -> dict:
-    statistics = {}
-
-    salaries = []
-
-    for vacancy in vacancies:
-        salary: Union[int, None] = predict_rub_salary_sj(vacancy)
-        if salary:
-            salaries.append(salary)
-
-    statistics["vacancies_found"] = len(vacancies)
-    statistics["vacancies_processed"] = len(salaries)
-    statistics["average_salary"] = int(sum(salaries) / len(salaries))
-
-    return statistics
-
-
 def main():
     load_dotenv()
     superjob_token = os.getenv("SUPERJOB_TOKEN")
@@ -107,7 +90,7 @@ def main():
             per_page=100,
         )
 
-        total_stats[language] = get_vacancies_stats_sj(vacancies)
+        total_stats[language] = get_vacancies_stats(vacancies, predict_rub_salary_sj)
 
     pprint(total_stats)
 
