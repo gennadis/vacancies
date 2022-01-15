@@ -11,7 +11,7 @@ SUPERJOB_API_URL = "https://api.superjob.ru/2.0"
 ENDPOINT = "/vacancies"
 
 
-def get_vacancies(
+def get_vacancies_sj(
     base_url: str,
     endpoint: str,
     token: str,
@@ -37,7 +37,7 @@ def get_vacancies(
     return vacancies
 
 
-def predict_rub_salary_for_sj(vacancie: dict) -> Optional[int]:
+def predict_rub_salary_sj(vacancie: dict) -> Optional[int]:
     salary_from: int = vacancie.get("payment_from")
     salary_to: int = vacancie.get("payment_to")
 
@@ -52,7 +52,7 @@ def main():
     load_dotenv()
     superjob_token = os.getenv("SUPERJOB_TOKEN")
 
-    vacancies = get_vacancies(
+    vacancies = get_vacancies_sj(
         base_url=SUPERJOB_API_URL,
         endpoint=ENDPOINT,
         token=superjob_token,
@@ -65,7 +65,7 @@ def main():
         print(
             vacancie["profession"],
             vacancie["town"]["title"],
-            predict_rub_salary_for_sj(vacancie),
+            predict_rub_salary_sj(vacancie),
             sep=", ",
         )
 

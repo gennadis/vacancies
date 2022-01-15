@@ -4,7 +4,7 @@ from typing import Union
 from utils import predict_salary
 
 
-def get_vacancies(
+def get_vacancies_hh(
     base_url: str,
     endpoint: str,
     role_id: int,
@@ -45,7 +45,7 @@ def get_vacancies(
     return vacancies
 
 
-def predict_rub_salary(vacancy: dict) -> Union[int, None]:
+def predict_rub_salary_hh(vacancy: dict) -> Union[int, None]:
     salary: dict = vacancy.get("salary")
     salary_from: int = salary.get("from")
     salary_to: int = salary.get("to")
@@ -56,12 +56,12 @@ def predict_rub_salary(vacancy: dict) -> Union[int, None]:
     return predict_salary(salary_from, salary_to)
 
 
-def get_vacancies_stats(vacancies: list[dict]) -> dict:
+def get_vacancies_stats_hh(vacancies: list[dict]) -> dict:
     statistics = {}
 
     salaries = []
     for vacancy in vacancies:
-        salary: Union[int, None] = predict_rub_salary(vacancy)
+        salary: Union[int, None] = predict_rub_salary_hh(vacancy)
         if salary:
             salaries.append(salary)
 

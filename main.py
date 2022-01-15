@@ -1,9 +1,14 @@
+import os
 from pprint import pprint
 
-from hh import get_vacancies, get_vacancies_stats
+from dotenv import load_dotenv
+
+from hh import get_vacancies_hh, get_vacancies_stats_hh
 
 HH_API_BASE_URL = "https://api.hh.ru"
 HH_VACANCIES_ENDPOINT = "/vacancies"
+
+
 PROGRAMMING_LANGUAGES = [
     "JavaScript",
     "Python",
@@ -23,7 +28,7 @@ def main():
     total_stats = {}
 
     for language in PROGRAMMING_LANGUAGES:
-        vacancies = get_vacancies(
+        vacancies = get_vacancies_hh(
             base_url=HH_API_BASE_URL,
             endpoint=HH_VACANCIES_ENDPOINT,
             role_id=96,
@@ -32,7 +37,7 @@ def main():
             text=language,
             per_page=100,
         )
-        total_stats[language] = get_vacancies_stats(vacancies)
+        total_stats[language] = get_vacancies_stats_hh(vacancies)
 
     pprint(total_stats)
 
