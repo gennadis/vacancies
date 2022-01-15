@@ -18,6 +18,7 @@ def get_vacancies_sj(
     town_id: int,
     profession_id: int,
     keyword: str,
+    per_page: int = 20,
 ) -> list[dict]:
 
     url = f"{base_url}{endpoint}"
@@ -28,12 +29,27 @@ def get_vacancies_sj(
         "town": town_id,
         "catalogues": profession_id,
         "keyword": keyword,
+        "count": per_page,
     }
 
-    response = requests.get(url=url, headers=headers, params=params)
-    response.raise_for_status()
+    current_page = 0
+    more_pages = True
 
-    vacancies = response.json()["objects"]
+    vacancies = []
+
+    while more_pages:
+        params["page"] = current_page
+
+        response = requests.get(url=url, headers=headers, params=params)
+        response.raise_for_status()
+
+        page_data = response.json()
+
+        vacancies.extend(page_data.get("objects"))
+
+        more_pages = page_data["more"]
+        current_page += 1
+
     return vacancies
 
 
@@ -59,6 +75,7 @@ def main():
         town_id=4,  # "Москва"
         profession_id=48,  # "Разработка, программирование"
         keyword="программист",
+        per_page=100,
     )
 
     for vacancy in vacancies:
@@ -68,6 +85,7 @@ def main():
             predict_rub_salary_sj(vacancy),
             sep=", ",
         )
+    print(len(vacancies))
 
 
 if __name__ == "__main__":
