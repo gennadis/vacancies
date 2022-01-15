@@ -6,7 +6,14 @@ HH_BASE_API = "https://api.hh.ru"
 
 
 def get_vacancies(
-    base_url: str, endpoint: str, role_id: int, area_id: int, period: int, text: str
+    base_url: str,
+    endpoint: str,
+    role_id: int,
+    area_id: int,
+    period: int,
+    text: str,
+    currency: str = "RUR",
+    per_page: int = 20,
 ) -> list[dict]:
 
     url = f"{base_url}{endpoint}"
@@ -16,13 +23,27 @@ def get_vacancies(
         "period": period,
         "text": text,
         "only_with_salary": True,
-        "currency": "RUR",
+        "currency": currency,
+        "per_page": per_page,
     }
 
-    response = requests.get(url, params)
-    response.raise_for_status()
+    current_page = 0
+    total_pages = 1
 
-    return response.json()
+    vacancies = []
+
+    while current_page < total_pages:
+        params["page"] = current_page
+
+        response = requests.get(url, params)
+        response.raise_for_status()
+        page_data = response.json()
+
+        vacancies.extend(page_data["items"])
+        total_pages = page_data["pages"]
+        current_page += 1
+
+    return vacancies
 
 
 def predict_rub_salary(vacancy: dict) -> Union[int, None]:
@@ -60,7 +81,6 @@ def get_vacancies_stats(vacancies: list[dict]) -> dict:
 
 
 def main():
-    total_stats = {}
 
     prog_languages = [
         "JavaScript",
@@ -75,18 +95,16 @@ def main():
         "1С",
     ]
 
-    for language in prog_languages:
-        vacancies = get_vacancies(
-            base_url=HH_BASE_API,
-            endpoint="/vacancies",
-            role_id=96,
-            area_id=1,
-            period=30,
-            text=language,
-        )
-        total_stats[language] = get_vacancies_stats(vacancies)
-
-    pprint(total_stats)
+    python = get_vacancies(
+        base_url=HH_BASE_API,
+        endpoint="/vacancies",
+        role_id=96,
+        area_id=1,
+        period=30,
+        text="python",
+        per_page=100,
+    )
+    print(len(python))
 
 
 if __name__ == "__main__":
