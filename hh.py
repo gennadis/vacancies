@@ -1,5 +1,6 @@
 import requests
 from pprint import pprint
+from typing import Union
 
 HH_BASE_API = "https://api.hh.ru"
 
@@ -24,7 +25,7 @@ def get_vacancies(
     return response.json()
 
 
-def predict_rub_salary(vacancy: dict) -> int:
+def predict_rub_salary(vacancy: dict) -> Union[int, None]:
     salary: dict = vacancy.get("salary")
     salary_from: int = salary.get("from")
     salary_to: int = salary.get("to")
@@ -42,10 +43,50 @@ def predict_rub_salary(vacancy: dict) -> int:
     return int((salary_from + salary_to) / 2)
 
 
+def get_vacancies_stats(vacancies: list[dict]) -> dict:
+    statistics = {}
+
+    salaries = []
+    for vacancy in vacancies.get("items"):
+        salary: Union[int, None] = predict_rub_salary(vacancy)
+        if salary:
+            salaries.append(salary)
+
+    statistics["vacancies_found"] = vacancies.get("found")
+    statistics["vacancies_processed"] = len(salaries)
+    statistics["average_salary"] = int(sum(salaries) / len(salaries))
+
+    return statistics
+
+
 def main():
-    python_jobs = get_vacancies(HH_BASE_API, "/vacancies", 96, 1, 30, "python")["items"]
-    for job in python_jobs:
-        print(predict_rub_salary(job))
+    total_stats = {}
+
+    prog_languages = [
+        "JavaScript",
+        "Python",
+        "Go",
+        "Java",
+        "Kotlin",
+        "C#",
+        "PHP",
+        "Swift",
+        "Ruby",
+        "1С",
+    ]
+
+    for language in prog_languages:
+        vacancies = get_vacancies(
+            base_url=HH_BASE_API,
+            endpoint="/vacancies",
+            role_id=96,
+            area_id=1,
+            period=30,
+            text=language,
+        )
+        total_stats[language] = get_vacancies_stats(vacancies)
+
+    pprint(total_stats)
 
 
 if __name__ == "__main__":
