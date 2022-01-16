@@ -26,6 +26,7 @@ PROGRAMMING_LANGUAGES = [
 
 
 def get_hh_total_stats(languages: list):
+    """Get HeadHunter vacancies stats by given programming languages."""
     hh_total_stats = {}
     for language in languages:
         vacancies = get_vacancies_hh(
@@ -43,6 +44,7 @@ def get_hh_total_stats(languages: list):
 
 
 def get_sj_total_stats(languages: list, token: str):
+    """Get SuperJob vacancies stats by given programming languages."""
     sj_total_stats = {}
     for language in languages:
         vacancies = get_vacancies_sj(

@@ -13,7 +13,11 @@ def get_vacancies_sj(
     keyword: str,
     per_page: int = 20,
 ) -> list[dict]:
+    """Get open vacancies from SuperJob.
 
+    API documentation:
+    https://api.superjob.ru/#search_vacanices
+    """
     url = f"{base_url}{endpoint}"
     headers = {
         "X-Api-App-Id": token,
@@ -47,6 +51,7 @@ def get_vacancies_sj(
 
 
 def predict_rub_salary_sj(vacancy: dict) -> Optional[int]:
+    """Predict SuperJob vacancy salary depending on various factors."""
     salary_from: int = vacancy.get("payment_from")
     salary_to: int = vacancy.get("payment_to")
 

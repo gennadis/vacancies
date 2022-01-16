@@ -14,7 +14,11 @@ def get_vacancies_hh(
     currency: str = "RUR",
     per_page: int = 20,
 ) -> list[dict]:
+    """Get open vacancies from HeadHunter.
 
+    API documentation:
+    https://github.com/hhru/api/blob/master/docs_eng/vacancies.md
+    """
     url = f"{base_url}{endpoint}"
     params = {
         "professional_role": role_id,
@@ -46,6 +50,7 @@ def get_vacancies_hh(
 
 
 def predict_rub_salary_hh(vacancy: dict) -> Optional[int]:
+    """Predict HH vacancy salary depending on various factors."""
     salary: dict = vacancy.get("salary")
     salary_from: int = salary.get("from")
     salary_to: int = salary.get("to")

@@ -4,6 +4,7 @@ from terminaltables import SingleTable
 
 
 def predict_salary(salary_from: int, salary_to: int) -> Union[int, float, None]:
+    """Predict salary depending on parameters given."""
     if not (salary_from or salary_to):
         return
     if not salary_to:
@@ -14,6 +15,7 @@ def predict_salary(salary_from: int, salary_to: int) -> Union[int, float, None]:
 
 
 def get_vacancies_stats(vacancies: list[dict], predict_salary_for: Callable) -> dict:
+    """Get vacancies and salary statistics."""
     statistics = {}
 
     salaries = []
@@ -30,6 +32,7 @@ def get_vacancies_stats(vacancies: list[dict], predict_salary_for: Callable) -> 
 
 
 def get_table(table_headers: list, content: dict, title: str):
+    """Get nice looking job stats table."""
     table_data = [table_headers]
     for language, stats in content.items():
         row = [language]
