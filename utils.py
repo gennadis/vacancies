@@ -27,9 +27,12 @@ def get_vacancies_stats(vacancies: list[dict], predict_salary_for: Callable) -> 
     return statistics
 
 
-def main():
-    pass
+def prepare_table(table_headers: list, content: dict):
+    table_data = [table_headers]
+    for language, stats in content.items():
+        row = [language]
+        for param in stats.values():
+            row.append(param)
+        table_data.append(row)
 
-
-if __name__ == "__main__":
-    main()
+    return table_data
