@@ -1,5 +1,7 @@
 from typing import Union, Callable
 
+from terminaltables import SingleTable
+
 
 def predict_salary(salary_from: int, salary_to: int) -> Union[int, float, None]:
     if not (salary_from or salary_to):
@@ -27,7 +29,7 @@ def get_vacancies_stats(vacancies: list[dict], predict_salary_for: Callable) -> 
     return statistics
 
 
-def prepare_table(table_headers: list, content: dict):
+def get_table(table_headers: list, content: dict, title: str):
     table_data = [table_headers]
     for language, stats in content.items():
         row = [language]
@@ -35,4 +37,7 @@ def prepare_table(table_headers: list, content: dict):
             row.append(param)
         table_data.append(row)
 
-    return table_data
+    table = SingleTable(table_data)
+    table.title = title
+
+    return table.table
