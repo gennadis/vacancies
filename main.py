@@ -50,15 +50,15 @@ def main():
     sj_total_stats = {}
     for language in PROGRAMMING_LANGUAGES:
         vacancies = get_vacancies_sj(
-            base_url=HH_API_BASE_URL,
-            endpoint=HH_VACANCIES_ENDPOINT,
-            role_id=96,
-            area_id=1,
-            period=30,
-            text=language,
+            base_url=SJ_API_BASE_URL,
+            endpoint=SJ_VACANCIES_ENDPOINT,
+            token=superjob_token,
+            town_id=4,
+            profession_id=48,
+            keyword=language,
             per_page=100,
         )
-        hh_total_stats[language] = get_vacancies_stats(vacancies, predict_rub_salary_sj)
+        sj_total_stats[language] = get_vacancies_stats(vacancies, predict_rub_salary_sj)
     pprint(sj_total_stats)
 
 
