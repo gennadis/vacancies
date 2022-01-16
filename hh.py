@@ -1,5 +1,5 @@
 import requests
-from typing import Union
+from typing import Optional
 
 from utils import predict_salary
 
@@ -45,7 +45,7 @@ def get_vacancies_hh(
     return vacancies
 
 
-def predict_rub_salary_hh(vacancy: dict) -> Union[int, None]:
+def predict_rub_salary_hh(vacancy: dict) -> Optional[int]:
     salary: dict = vacancy.get("salary")
     salary_from: int = salary.get("from")
     salary_to: int = salary.get("to")
@@ -53,12 +53,4 @@ def predict_rub_salary_hh(vacancy: dict) -> Union[int, None]:
     if salary.get("currency") != "RUR":
         return
 
-    return predict_salary(salary_from, salary_to)
-
-
-def main():
-    pass
-
-
-if __name__ == "__main__":
-    main()
+    return int(predict_salary(salary_from, salary_to))
