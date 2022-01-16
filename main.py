@@ -36,8 +36,8 @@ def main():
         vacancies = get_vacancies_hh(
             base_url=HH_API_BASE_URL,
             endpoint=HH_VACANCIES_ENDPOINT,
-            role_id=96,
-            area_id=1,
+            role_id=96,  # Developer
+            area_id=1,  # Moscow
             period=30,
             text=language,
             per_page=100,
@@ -53,8 +53,8 @@ def main():
             base_url=SJ_API_BASE_URL,
             endpoint=SJ_VACANCIES_ENDPOINT,
             token=superjob_token,
-            town_id=4,
-            profession_id=48,
+            town_id=4,  # Moscow
+            profession_id=48,  # Developer
             keyword=language,
             per_page=100,
         )
