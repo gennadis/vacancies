@@ -3,6 +3,8 @@
 This project is a simple command line tool for getting  
 software developer vacancies statistics from HeadHunter and SuperJob.
 
+![Screenshot](Screenshot.png)
+
 ## Features
 - Get HeadHunter vacancies stats via [HH API](https://github.com/hhru/api/)
 - Get SuperJob vacancies stats via [SuperJob API](https://api.superjob.ru/)
