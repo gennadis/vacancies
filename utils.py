@@ -14,7 +14,9 @@ def predict_salary(salary_from: int, salary_to: int) -> Union[int, float, None]:
     return (salary_from + salary_to) / 2
 
 
-def get_vacancies_stats(vacancies: list[dict], predict_salary_for: Callable) -> dict:
+def collect_vacancies_stats(
+    vacancies: list[dict], predict_salary_for: Callable
+) -> dict:
     """Get vacancies and salary statistics."""
     statistics = {}
 
@@ -31,7 +33,7 @@ def get_vacancies_stats(vacancies: list[dict], predict_salary_for: Callable) -> 
     return statistics
 
 
-def get_table(table_headers: list, content: dict, title: str):
+def create_table(table_headers: list, content: dict, title: str):
     """Get nice looking job stats table."""
     table_data = [table_headers]
     for language, stats in content.items():

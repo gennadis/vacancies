@@ -2,9 +2,9 @@ import os
 
 from dotenv import load_dotenv
 
-from hh import get_vacancies_hh, predict_rub_salary_hh
-from superjob import get_vacancies_sj, predict_rub_salary_sj
-from utils import get_vacancies_stats, get_table
+from hh import fetch_vacancies_from_hh, predict_rub_salary_hh
+from superjob import fetch_vacancies_from_sj, predict_rub_salary_sj
+from utils import collect_vacancies_stats, create_table
 
 HH_API_BASE_URL = "https://api.hh.ru"
 HH_VACANCIES_ENDPOINT = "/vacancies"
@@ -25,11 +25,11 @@ PROGRAMMING_LANGUAGES = [
 ]
 
 
-def get_hh_total_stats(languages: list) -> dict:
+def collect_stats_from_hh(languages: list) -> dict:
     """Get HeadHunter vacancies stats for programming languages."""
     hh_total_stats = {}
     for language in languages:
-        vacancies = get_vacancies_hh(
+        vacancies = fetch_vacancies_from_hh(
             base_url=HH_API_BASE_URL,
             endpoint=HH_VACANCIES_ENDPOINT,
             role_id=96,  # Developer
@@ -38,16 +38,18 @@ def get_hh_total_stats(languages: list) -> dict:
             text=language,
             per_page=100,
         )
-        hh_total_stats[language] = get_vacancies_stats(vacancies, predict_rub_salary_hh)
+        hh_total_stats[language] = collect_vacancies_stats(
+            vacancies, predict_rub_salary_hh
+        )
 
     return hh_total_stats
 
 
-def get_sj_total_stats(languages: list, token: str) -> dict:
+def collect_stats_from_sj(languages: list, token: str) -> dict:
     """Get SuperJob vacancies stats for programming languages."""
     sj_total_stats = {}
     for language in languages:
-        vacancies = get_vacancies_sj(
+        vacancies = fetch_vacancies_from_sj(
             base_url=SJ_API_BASE_URL,
             endpoint=SJ_VACANCIES_ENDPOINT,
             token=token,
@@ -56,7 +58,9 @@ def get_sj_total_stats(languages: list, token: str) -> dict:
             keyword=language,
             per_page=100,
         )
-        sj_total_stats[language] = get_vacancies_stats(vacancies, predict_rub_salary_sj)
+        sj_total_stats[language] = collect_vacancies_stats(
+            vacancies, predict_rub_salary_sj
+        )
     return sj_total_stats
 
 
@@ -71,12 +75,12 @@ def main():
         "Средняя зарплата",
     ]
 
-    hh_total_stats = get_hh_total_stats(PROGRAMMING_LANGUAGES)
-    hh_table = get_table(table_headers, hh_total_stats, "HeadHunter")
+    hh_total_stats = collect_stats_from_hh(PROGRAMMING_LANGUAGES)
+    hh_table = create_table(table_headers, hh_total_stats, "HeadHunter")
     print(hh_table)
 
-    sj_total_stats = get_sj_total_stats(PROGRAMMING_LANGUAGES, superjob_token)
-    sj_table = get_table(table_headers, sj_total_stats, "SuperJob")
+    sj_total_stats = collect_stats_from_sj(PROGRAMMING_LANGUAGES, superjob_token)
+    sj_table = create_table(table_headers, sj_total_stats, "SuperJob")
     print(sj_table)
 
 

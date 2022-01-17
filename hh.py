@@ -4,7 +4,7 @@ from typing import Optional
 from utils import predict_salary
 
 
-def get_vacancies_hh(
+def fetch_vacancies_from_hh(
     base_url: str,
     endpoint: str,
     role_id: int,
