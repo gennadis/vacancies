@@ -12,22 +12,10 @@ HH_VACANCIES_ENDPOINT = "/vacancies"
 SJ_API_BASE_URL = "https://api.superjob.ru/2.0"
 SJ_VACANCIES_ENDPOINT = "/vacancies"
 
-PROGRAMMING_LANGUAGES = [
-    "JavaScript",
-    "Python",
-    "Go",
-    "Java",
-    "Kotlin",
-    "C#",
-    "PHP",
-    "Swift",
-    "Ruby",
-]
-
 
 def collect_stats_from_hh(languages: list) -> dict:
     """Get HeadHunter vacancies stats for programming languages."""
-    hh_total_stats = {}
+    hh_stats = {}
     for language in languages:
         vacancies = fetch_vacancies_from_hh(
             base_url=HH_API_BASE_URL,
@@ -38,16 +26,14 @@ def collect_stats_from_hh(languages: list) -> dict:
             text=language,
             per_page=100,
         )
-        hh_total_stats[language] = collect_vacancies_stats(
-            vacancies, predict_rub_salary_hh
-        )
+        hh_stats[language] = collect_vacancies_stats(vacancies, predict_rub_salary_hh)
 
-    return hh_total_stats
+    return hh_stats
 
 
 def collect_stats_from_sj(languages: list, token: str) -> dict:
     """Get SuperJob vacancies stats for programming languages."""
-    sj_total_stats = {}
+    sj_stats = {}
     for language in languages:
         vacancies = fetch_vacancies_from_sj(
             base_url=SJ_API_BASE_URL,
@@ -58,16 +44,25 @@ def collect_stats_from_sj(languages: list, token: str) -> dict:
             keyword=language,
             per_page=100,
         )
-        sj_total_stats[language] = collect_vacancies_stats(
-            vacancies, predict_rub_salary_sj
-        )
-    return sj_total_stats
+        sj_stats[language] = collect_vacancies_stats(vacancies, predict_rub_salary_sj)
+    return sj_stats
 
 
 def main():
     load_dotenv()
-    superjob_token = os.getenv("SUPERJOB_TOKEN")
+    sj_token = os.getenv("SUPERJOB_TOKEN")
 
+    programming_languages = [
+        "JavaScript",
+        "Python",
+        "Go",
+        "Java",
+        "Kotlin",
+        "C#",
+        "PHP",
+        "Swift",
+        "Ruby",
+    ]
     table_headers = [
         "Язык программирования",
         "Вакансий найдено",
@@ -75,12 +70,12 @@ def main():
         "Средняя зарплата",
     ]
 
-    hh_total_stats = collect_stats_from_hh(PROGRAMMING_LANGUAGES)
-    hh_table = create_table(table_headers, hh_total_stats, "HeadHunter")
+    hh_stats = collect_stats_from_hh(programming_languages)
+    hh_table = create_table(table_headers, hh_stats, "HeadHunter Moscow")
     print(hh_table)
 
-    sj_total_stats = collect_stats_from_sj(PROGRAMMING_LANGUAGES, superjob_token)
-    sj_table = create_table(table_headers, sj_total_stats, "SuperJob")
+    sj_stats = collect_stats_from_sj(programming_languages, sj_token)
+    sj_table = create_table(table_headers, sj_stats, "SuperJob Moscow")
     print(sj_table)
 
 
