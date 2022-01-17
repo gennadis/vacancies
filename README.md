@@ -29,7 +29,7 @@ source env/bin/activate
 pip install -r requirements.txt
 ```
 
-4. Create .env file and place your SuperJob Token in it
+4. Create `.env` file and place your SuperJob Token in it
 ```python
 SUPERJOB_TOKEN=place_your_token_here
 ```
