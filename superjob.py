@@ -43,11 +43,11 @@ def fetch_vacancies_from_sj(
         response = requests.get(url=url, headers=headers, params=params)
         response.raise_for_status()
 
-        page_data = response.json()
+        vacancies_page = response.json()
 
-        vacancies.extend(page_data.get("objects"))
+        vacancies.extend(vacancies_page.get("objects"))
 
-        more_pages = page_data["more"]
+        more_pages = vacancies_page["more"]
         current_page += 1
 
     return vacancies

@@ -43,10 +43,10 @@ def fetch_vacancies_from_hh(
 
         response = requests.get(url, params)
         response.raise_for_status()
-        page_data = response.json()
+        vacancies_page = response.json()
 
-        vacancies.extend(page_data["items"])
-        total_pages = page_data["pages"]
+        vacancies.extend(vacancies_page["items"])
+        total_pages = vacancies_page["pages"]
         current_page += 1
 
     return vacancies
