@@ -5,7 +5,6 @@ from utils import predict_salary, collect_vacancies_stats
 
 
 SJ_API_BASE_URL = "https://api.superjob.ru/2.0"
-SJ_VACANCIES_ENDPOINT = "/vacancies"
 
 
 def fetch_vacancies_from_sj(
@@ -72,7 +71,7 @@ def collect_stats_from_sj(languages: list, token: str) -> dict:
     for language in languages:
         vacancies = fetch_vacancies_from_sj(
             base_url=SJ_API_BASE_URL,
-            endpoint=SJ_VACANCIES_ENDPOINT,
+            endpoint="/vacancies",
             token=token,
             town_id=4,  # Moscow
             profession_id=48,  # Developer

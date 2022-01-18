@@ -5,7 +5,6 @@ from utils import predict_salary, collect_vacancies_stats
 
 
 HH_API_BASE_URL = "https://api.hh.ru"
-HH_VACANCIES_ENDPOINT = "/vacancies"
 
 
 def fetch_vacancies_from_hh(
@@ -71,7 +70,7 @@ def collect_stats_from_hh(languages: list) -> dict:
     for language in languages:
         vacancies = fetch_vacancies_from_hh(
             base_url=HH_API_BASE_URL,
-            endpoint=HH_VACANCIES_ENDPOINT,
+            endpoint="/vacancies",
             role_id=96,  # Developer
             area_id=1,  # Moscow
             period=30,  # last month
