@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 from hh import collect_stats_from_hh
 from superjob import collect_stats_from_sj
-from utils import create_table
+from analytics import create_table
 
 
 def main():
