@@ -1,8 +1,8 @@
-import requests
 from typing import Optional
 
-from utils import predict_salary, collect_vacancies_stats
+import requests
 
+from analytics import predict_salary, collect_vacancies_stats
 
 SJ_API_BASE_URL = "https://api.superjob.ru/2.0"
 
