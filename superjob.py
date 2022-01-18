@@ -1,3 +1,4 @@
+from itertools import count
 from typing import Optional
 
 import requests
@@ -32,14 +33,10 @@ def fetch_vacancies_from_sj(
         "count": per_page,
     }
 
-    current_page = 0
-    more_pages = True
-
     vacancies = []
 
-    while more_pages:
-        params["page"] = current_page
-
+    for page in count(0):
+        params["page"] = page
         response = requests.get(url=url, headers=headers, params=params)
         response.raise_for_status()
 
@@ -47,8 +44,8 @@ def fetch_vacancies_from_sj(
 
         vacancies.extend(vacancies_page.get("objects"))
 
-        more_pages = vacancies_page["more"]
-        current_page += 1
+        if not vacancies_page["more"]:
+            break
 
     return vacancies
 

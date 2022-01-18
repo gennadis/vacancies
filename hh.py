@@ -1,3 +1,4 @@
+from itertools import count
 from typing import Optional
 
 import requests
@@ -33,21 +34,18 @@ def fetch_vacancies_from_hh(
         "per_page": per_page,
     }
 
-    current_page = 0
-    total_pages = 1
-
     vacancies = []
 
-    while current_page < total_pages:
-        params["page"] = current_page
-
+    for page in count(0):
+        params["page"] = page
         response = requests.get(url, params)
         response.raise_for_status()
-        vacancies_page = response.json()
 
+        vacancies_page = response.json()
         vacancies.extend(vacancies_page["items"])
-        total_pages = vacancies_page["pages"]
-        current_page += 1
+
+        if page >= vacancies_page["pages"]:
+            break
 
     return vacancies
 
