@@ -47,7 +47,7 @@ def fetch_vacancies_from_hh(
         if page >= vacancies_page["pages"]:
             break
 
-    return vacancies
+    return vacancies_page["found"], vacancies
 
 
 def predict_rub_salary_hh(vacancy: dict) -> Optional[int]:
@@ -66,7 +66,7 @@ def collect_stats_from_hh(languages: list) -> dict:
     """Get HeadHunter vacancies stats for programming languages."""
     hh_stats = {}
     for language in languages:
-        vacancies = fetch_vacancies_from_hh(
+        vacancies_count, vacancies = fetch_vacancies_from_hh(
             base_url=HH_API_BASE_URL,
             endpoint="/vacancies",
             role_id=96,  # Developer
@@ -75,6 +75,8 @@ def collect_stats_from_hh(languages: list) -> dict:
             text=language,
             per_page=100,
         )
-        hh_stats[language] = collect_vacancies_stats(vacancies, predict_rub_salary_hh)
+        hh_stats[language] = collect_vacancies_stats(
+            vacancies_count, vacancies, predict_rub_salary_hh
+        )
 
     return hh_stats

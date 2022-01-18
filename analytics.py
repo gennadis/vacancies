@@ -15,7 +15,7 @@ def predict_salary(salary_from: int, salary_to: int) -> Union[int, float, None]:
 
 
 def collect_vacancies_stats(
-    vacancies: list[dict], predict_salary_for: Callable
+    vacancies_count: int, vacancies: list[dict], predict_salary_for: Callable
 ) -> dict:
     """Get vacancies and salary statistics."""
     salaries = []
@@ -26,7 +26,7 @@ def collect_vacancies_stats(
 
     if salaries:
         statistics = {
-            "vacancies_found": len(vacancies),
+            "vacancies_found": vacancies_count,
             "vacancies_processed": len(salaries),
             "average_salary": int(sum(salaries) / len(salaries)),
         }

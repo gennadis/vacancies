@@ -47,7 +47,7 @@ def fetch_vacancies_from_sj(
         if not vacancies_page["more"]:
             break
 
-    return vacancies
+    return vacancies_page["total"], vacancies
 
 
 def predict_rub_salary_sj(vacancy: dict) -> Optional[int]:
@@ -66,7 +66,7 @@ def collect_stats_from_sj(languages: list, token: str) -> dict:
     """Get SuperJob vacancies stats for programming languages."""
     sj_stats = {}
     for language in languages:
-        vacancies = fetch_vacancies_from_sj(
+        vacancies_count, vacancies = fetch_vacancies_from_sj(
             base_url=SJ_API_BASE_URL,
             endpoint="/vacancies",
             token=token,
@@ -75,5 +75,7 @@ def collect_stats_from_sj(languages: list, token: str) -> dict:
             keyword=language,
             per_page=100,
         )
-        sj_stats[language] = collect_vacancies_stats(vacancies, predict_rub_salary_sj)
+        sj_stats[language] = collect_vacancies_stats(
+            vacancies_count, vacancies, predict_rub_salary_sj
+        )
     return sj_stats
