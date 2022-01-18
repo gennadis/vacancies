@@ -60,7 +60,7 @@ def predict_rub_salary_sj(vacancy: dict) -> Optional[int]:
 
     if vacancy.get("currency") != "rub":
         return
-    if salary_from == salary_to == 0:
+    if not salary_from and not salary_to:
         return
     return int(predict_salary(salary_from, salary_to))
 
