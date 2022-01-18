@@ -18,29 +18,29 @@ def collect_vacancies_stats(
     vacancies: list[dict], predict_salary_for: Callable
 ) -> dict:
     """Get vacancies and salary statistics."""
-    statistics = {}
-
     salaries = []
     for vacancy in vacancies:
         salary: Union[int, None] = predict_salary_for(vacancy)
         if salary:
             salaries.append(salary)
 
-    statistics["vacancies_found"] = len(vacancies)
-    statistics["vacancies_processed"] = len(salaries)
-    statistics["average_salary"] = int(sum(salaries) / len(salaries))
-
-    return statistics
+    if salaries:
+        statistics = {
+            "vacancies_found": len(vacancies),
+            "vacancies_processed": len(salaries),
+            "average_salary": int(sum(salaries) / len(salaries)),
+        }
+        return statistics
 
 
 def create_table(table_headers: list, content: dict, title: str):
     """Get nice looking job stats table."""
-    table_data = [table_headers]
+    table_rows = [table_headers]
     for language, stats in content.items():
         row = [language, *stats.values()]
-        table_data.append(row)
+        table_rows.append(row)
 
-    table = SingleTable(table_data)
+    table = SingleTable(table_rows)
     table.title = title
 
     return table.table
