@@ -37,9 +37,7 @@ def create_table(table_headers: list, content: dict, title: str):
     """Get nice looking job stats table."""
     table_data = [table_headers]
     for language, stats in content.items():
-        row = [language]
-        for param in stats.values():
-            row.append(param)
+        row = [language, *stats.values()]
         table_data.append(row)
 
     table = SingleTable(table_data)
