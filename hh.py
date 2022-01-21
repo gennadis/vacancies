@@ -35,15 +35,15 @@ def fetch_vacancies_from_hh(
 
     vacancies = []
 
-    for page in count(0):
-        params["page"] = page
+    for page_number in count(0):
+        params["page"] = page_number
         response = requests.get(url, params)
         response.raise_for_status()
 
         vacancies_page = response.json()
         vacancies.extend(vacancies_page["items"])
 
-        if page >= vacancies_page["pages"]:
+        if page_number >= vacancies_page["pages"]:
             break
 
     return vacancies_page["found"], vacancies

@@ -34,8 +34,8 @@ def fetch_vacancies_from_sj(
 
     vacancies = []
 
-    for page in count(0):
-        params["page"] = page
+    for page_number in count(0):
+        params["page"] = page_number
         response = requests.get(url=url, headers=headers, params=params)
         response.raise_for_status()
 
