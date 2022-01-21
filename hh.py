@@ -62,21 +62,20 @@ def predict_rub_salary_hh(vacancy: dict) -> Optional[int]:
     return int(predict_salary(salary_from, salary_to))
 
 
-def collect_stats_from_hh(languages: list) -> dict:
-    """Get HeadHunter vacancies stats for programming languages."""
-    hh_stats = {}
-    for language in languages:
-        vacancies_count, vacancies = fetch_vacancies_from_hh(
-            base_url=HH_API_BASE_URL,
-            endpoint="/vacancies",
-            role_id=96,  # Developer
-            area_id=1,  # Moscow
-            period=30,  # last month
-            text=language,
-            per_page=100,
-        )
-        hh_stats[language] = collect_vacancies_stats(
-            vacancies_count, vacancies, predict_rub_salary_hh
-        )
+def collect_stats_from_hh_for(language: str) -> dict:
+    """Get HeadHunter vacancies stats for passed programming language."""
+    vacancies_count, vacancies = fetch_vacancies_from_hh(
+        base_url=HH_API_BASE_URL,
+        endpoint="/vacancies",
+        role_id=96,  # Developer
+        area_id=1,  # Moscow
+        period=30,  # last month
+        text=language,
+        per_page=100,
+    )
+
+    hh_stats = collect_vacancies_stats(
+        vacancies_count, vacancies, predict_rub_salary_hh
+    )
 
     return hh_stats

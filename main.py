@@ -2,8 +2,8 @@ import os
 
 from dotenv import load_dotenv
 
-from hh import collect_stats_from_hh
-from superjob import collect_stats_from_sj
+from hh import collect_stats_from_hh_for
+from superjob import collect_stats_from_sj_for
 from analytics import create_table
 
 
@@ -29,12 +29,16 @@ def main():
         "Средняя зарплата",
     ]
 
-    hh_stats = collect_stats_from_hh(programming_languages)
-    hh_table = create_table(table_headers, hh_stats, "HeadHunter Moscow")
-    print(hh_table)
+    hh_stats, sj_stats = {}, {}
 
-    sj_stats = collect_stats_from_sj(programming_languages, sj_token)
+    for language in programming_languages:
+        hh_stats[language] = collect_stats_from_hh_for(language)
+        sj_stats[language] = collect_stats_from_sj_for(language, sj_token)
+
+    hh_table = create_table(table_headers, hh_stats, "HeadHunter Moscow")
     sj_table = create_table(table_headers, sj_stats, "SuperJob Moscow")
+
+    print(hh_table)
     print(sj_table)
 
 
