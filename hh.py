@@ -10,7 +10,6 @@ HH_API_BASE_URL = "https://api.hh.ru"
 
 def fetch_vacancies_from_hh(
     base_url: str,
-    endpoint: str,
     role_id: int,
     area_id: int,
     period: int,
@@ -23,7 +22,7 @@ def fetch_vacancies_from_hh(
     API documentation:
     https://github.com/hhru/api/blob/master/docs_eng/vacancies.md
     """
-    url = f"{base_url}{endpoint}"
+    url = f"{base_url}/vacancies"
     params = {
         "professional_role": role_id,
         "area": area_id,
@@ -66,7 +65,6 @@ def collect_stats_from_hh_for(language: str) -> dict:
     """Get HeadHunter vacancies stats for passed programming language."""
     vacancies_count, vacancies = fetch_vacancies_from_hh(
         base_url=HH_API_BASE_URL,
-        endpoint="/vacancies",
         role_id=96,  # Developer
         area_id=1,  # Moscow
         period=30,  # last month

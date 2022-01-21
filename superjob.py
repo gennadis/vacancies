@@ -10,7 +10,6 @@ SJ_API_BASE_URL = "https://api.superjob.ru/2.0"
 
 def fetch_vacancies_from_sj(
     base_url: str,
-    endpoint: str,
     token: str,
     town_id: int,
     profession_id: int,
@@ -22,7 +21,7 @@ def fetch_vacancies_from_sj(
     API documentation:
     https://api.superjob.ru/#search_vacanices
     """
-    url = f"{base_url}{endpoint}"
+    url = f"{base_url}/vacancies"
     headers = {
         "X-Api-App-Id": token,
     }
@@ -66,7 +65,6 @@ def collect_stats_from_sj_for(language: str, token: str) -> dict:
     """Get SuperJob vacancies stats for passed programming language."""
     vacancies_count, vacancies = fetch_vacancies_from_sj(
         base_url=SJ_API_BASE_URL,
-        endpoint="/vacancies",
         token=token,
         town_id=4,  # Moscow
         profession_id=48,  # Developer
