@@ -1,6 +1,7 @@
 import os
 
 from dotenv import load_dotenv
+from tqdm import tqdm
 
 from hh import collect_stats_from_hh_for
 from superjob import collect_stats_from_sj_for
@@ -31,7 +32,12 @@ def main():
 
     hh_stats, sj_stats = {}, {}
 
-    for language in programming_languages:
+    for language in tqdm(
+        iterable=programming_languages,
+        desc="Analyzing vacancies",
+        unit="programming language",
+        colour="white",
+    ):
         hh_stats[language] = collect_stats_from_hh_for(language)
         sj_stats[language] = collect_stats_from_sj_for(language, sj_token)
 
